@@ -1,163 +1,1046 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Northbridge Command</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      background: #0b0b0c;
-      color: #f5f5f5;
-    }
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 80px 20px;
-    }
-    h1 {
-      font-size: 52px;
-      margin-bottom: 10px;
-      letter-spacing: -1px;
-    }
-    h2 {
-      font-size: 24px;
-      margin-top: 70px;
-      margin-bottom: 15px;
-    }
-    p {
-      color: #b0b0b0;
-      line-height: 1.7;
-      max-width: 720px;
-    }
-    .tagline {
-      font-size: 20px;
-      color: #e0e0e0;
-      margin-bottom: 20px;
-    }
-    .subtagline {
-      font-size: 15px;
-      color: #888;
-      margin-bottom: 30px;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 25px;
-      background: #ffffff;
-      color: #000;
-      padding: 14px 28px;
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 6px;
-    }
-    .section {
-      margin-top: 70px;
-    }
-    .card {
-      background: #121214;
-      padding: 26px;
-      border-radius: 10px;
-      margin-top: 20px;
-      border: 1px solid #1e1e22;
-    }
-    .subtle {
-      color: #777;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-    ul {
-      padding-left: 18px;
-      color: #b0b0b0;
-    }
-    li {
-      margin-bottom: 8px;
-    }
-    .highlight {
-      color: #ffffff;
-      font-weight: 600;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northbridge Command</title>
+<meta name="description" content="Northbridge Command designs and builds custom AI systems for high-stakes environments.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,900&family=Syne:wght@600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:        #05070A;
+  --steel-dark:   #0D1117;
+  --steel-mid:    #1C2333;
+  --steel-light:  #8B9AB0;
+  --white:        #F0F4F8;
+  --blue-core:    #1A6BFF;
+  --blue-dim:     #0D3680;
+  --blue-subtle:  #0A1F4A;
+  --font-hero:    'Fraunces', serif;
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+::selection { background: var(--blue-core); color: #fff; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--steel-dark); }
+::-webkit-scrollbar-thumb { background: var(--steel-mid); border-radius: 2px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 64px;
+  transition: background 0.3s, backdrop-filter 0.3s, border-bottom 0.3s;
+}
+nav.scrolled {
+  background: rgba(5,7,10,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--steel-mid);
+}
+.nav-wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-link {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--steel-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--white); }
+.nav-engage {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  border: 1px solid rgba(26,107,255,0.6);
+  padding: 8px 20px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.nav-engage:hover {
+  background: rgba(26,107,255,0.12);
+  border-color: var(--blue-core);
+}
+.nav-mobile-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-direction: column;
+  gap: 5px;
+}
+.nav-mobile-btn span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--white);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-mobile-btn.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-mobile-btn.open span:nth-child(2) { opacity: 0; }
+.nav-mobile-btn.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.mobile-drawer {
+  display: none;
+  position: fixed;
+  top: 64px; left: 0; right: 0;
+  background: rgba(5,7,10,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--steel-mid);
+  padding: 32px 48px;
+  flex-direction: column;
+  gap: 24px;
+  z-index: 99;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.mobile-drawer.open {
+  transform: translateY(0);
+  opacity: 1;
+}
+.mobile-drawer .nav-link {
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(28,35,51,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28,35,51,0.5) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+.hero-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -60%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(13,54,128,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 24px;
+  max-width: 900px;
+}
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--blue-core);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s ease forwards;
+}
+.hero-headline {
+  font-family: var(--font-hero);
+  font-weight: 900;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s ease forwards;
+}
+.hero-headline em {
+  font-style: normal;
+  color: var(--blue-core);
+}
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 300;
+  color: var(--steel-light);
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s ease forwards;
+}
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.8s ease forwards;
+}
+.btn-primary {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--blue-core);
+  border: 1px solid var(--blue-core);
+  padding: 14px 32px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+  display: inline-block;
+}
+.btn-primary:hover { background: #1559d9; transform: translateY(-1px); }
+.btn-ghost {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: transparent;
+  border: 1px solid rgba(139,154,176,0.4);
+  padding: 14px 32px;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  display: inline-block;
+}
+.btn-ghost:hover {
+  border-color: var(--steel-light);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+.hero-terminal {
+  margin-top: 56px;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.1s ease forwards;
+}
+.hero-terminal-line {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(139,154,176,0.5);
+  letter-spacing: 0.08em;
+  height: 20px;
+}
+.hero-terminal-line .cursor {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  background: var(--blue-core);
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+  opacity: 0.7;
+}
+@keyframes blink { 0%,100%{opacity:0.7} 50%{opacity:0} }
+
+/* ── SECTIONS COMMON ── */
+section { padding: 120px 48px; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--blue-core);
+  margin-bottom: 48px;
+}
+.section-label::before {
+  content: '// ';
+  color: var(--steel-mid);
+}
+
+/* ── POSITIONING ── */
+#positioning {
+  background: var(--steel-dark);
+  text-align: center;
+}
+.position-statement {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.position-headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin-bottom: 32px;
+}
+.position-body {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--steel-light);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto 72px;
+}
+.stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  border-top: 1px solid var(--steel-mid);
+  border-bottom: 1px solid var(--steel-mid);
+  padding: 40px 0;
+}
+.stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 0 40px;
+}
+.stat-item + .stat-item {
+  border-left: 1px solid var(--steel-mid);
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 3rem;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-value.blue { color: var(--blue-core); font-size: 2rem; padding-top: 0.5rem; }
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--steel-light);
+}
+
+/* ── WORK ── */
+#work { background: var(--black); }
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--steel-mid);
+  border: 1px solid var(--steel-mid);
+  margin-top: 8px;
+}
+.work-card {
+  background: var(--steel-dark);
+  padding: 40px;
+  position: relative;
+  transition: background 0.25s;
+  overflow: hidden;
+}
+.work-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 40%;
+  height: 1px;
+  background: var(--blue-core);
+  transition: width 0.3s ease;
+}
+.work-card:hover { background: var(--blue-subtle); }
+.work-card:hover::before { width: 100%; }
+.work-domain {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-core);
+  margin-bottom: 20px;
+}
+.work-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--white);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.work-one-line {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--steel-light);
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+.work-block {
+  margin-bottom: 20px;
+}
+.work-block-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-core);
+  margin-bottom: 6px;
+  opacity: 0.7;
+}
+.work-block-text {
+  font-size: 0.83rem;
+  font-weight: 300;
+  color: var(--steel-light);
+  line-height: 1.7;
+}
+.work-block-text strong,
+.work-bullets li strong {
+  color: var(--white);
+  font-weight: 500;
+}
+.work-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.work-bullets li {
+  font-size: 0.83rem;
+  font-weight: 300;
+  color: var(--steel-light);
+  line-height: 1.7;
+  padding: 5px 0 5px 14px;
+  position: relative;
+  border-bottom: 1px solid rgba(28,35,51,0.6);
+}
+.work-bullets li:first-child { border-top: 1px solid rgba(28,35,51,0.6); }
+.work-bullets li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--blue-core);
+}
+.work-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+.work-tech span {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: rgba(139,154,176,0.6);
+  border: 1px solid rgba(28,35,51,1);
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+.work-bottom-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(139,154,176,0.35);
+  padding-top: 16px;
+  border-top: 1px solid rgba(28,35,51,0.8);
+}
+
+/* ── CAPABILITIES ── */
+#capabilities {
+  background: var(--steel-dark);
+}
+.capabilities-inner {
+  max-width: 900px;
+}
+.cap-row {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 48px;
+  align-items: start;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--steel-mid);
+  transition: padding-left 0.2s;
+}
+.cap-row:first-child { border-top: 1px solid var(--steel-mid); }
+.cap-row:hover { padding-left: 8px; }
+.cap-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+.cap-desc {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--steel-light);
+  line-height: 1.7;
+}
+
+/* ── WHY ── */
+#why {
+  background: var(--black);
+  position: relative;
+}
+#why::before,
+#why::after {
+  content: '';
+  position: absolute;
+  left: 48px; right: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(26,107,255,0.4), transparent);
+}
+#why::before { top: 0; }
+#why::after  { bottom: 0; }
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 64px;
+  margin-top: 8px;
+}
+.why-item {}
+.why-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--white);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.why-body {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--steel-light);
+  line-height: 1.75;
+}
+
+/* ── CONTACT ── */
+#contact {
+  background: var(--black);
+  text-align: center;
+  padding-bottom: 80px;
+}
+.contact-headline {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin-bottom: 20px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contact-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--steel-light);
+  margin-bottom: 56px;
+  line-height: 1.7;
+}
+.contact-form {
+  max-width: 520px;
+  margin: 0 auto 64px;
+  text-align: left;
+}
+.form-field {
+  margin-bottom: 16px;
+}
+.form-field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--steel-light);
+  margin-bottom: 8px;
+}
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  background: var(--steel-dark);
+  border: 1px solid var(--steel-mid);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  padding: 14px 16px;
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--blue-core);
+}
+.form-field textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.6;
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: rgba(139,154,176,0.35);
+}
+.btn-submit {
+  width: 100%;
+  background: var(--blue-core);
+  border: 1px solid var(--blue-core);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 16px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.btn-submit:hover { background: #1559d9; }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.form-status {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  margin-top: 16px;
+  text-align: center;
+  min-height: 20px;
+}
+.form-status.success { color: #4ade80; }
+.form-status.error   { color: #f87171; }
+.contact-footer {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(139,154,176,0.3);
+  line-height: 2;
+}
+
+/* ── FADE IN ON SCROLL ── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-right { display: none; }
+  .nav-mobile-btn { display: flex; }
+  .mobile-drawer { display: flex; padding: 32px 24px; }
+
+  section { padding: 80px 24px; }
+  #why::before, #why::after { left: 24px; right: 24px; }
+
+  .work-grid { grid-template-columns: 1fr; gap: 0; }
+  .work-card { border-bottom: 1px solid var(--steel-mid); }
+  .why-grid { grid-template-columns: 1fr; gap: 40px; }
+  .cap-row { grid-template-columns: 1fr; gap: 8px; }
+
+  .stats-row { flex-direction: column; gap: 32px; padding: 40px 0; }
+  .stat-item + .stat-item { border-left: none; border-top: 1px solid var(--steel-mid); padding-top: 32px; }
+  .stat-item { padding: 0; }
+}
+
+@media (max-width: 600px) {
+  .hero-headline { font-size: 2.4rem; }
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+}
+</style>
 </head>
 <body>
 
-<div class="container">
-
-  <h1>Northbridge Command</h1>
-  <p class="tagline">
-    We solve complex technical and operational problems where failure is expensive and time is constrained.
-  </p>
-  <p class="subtagline">
-    Typical engagements: high-impact, time-sensitive, outcome-driven.
-  </p>
-
-  <a class="btn" href="https://calendly.com/alan-northbridgecommand/private-consultation">Present Your Problem</a>
-  <p class="subtle">Selective engagements. Limited capacity.</p>
-
-  <div class="section">
-    <h2>Problems We Solve</h2>
-    <div class="card">
-      <ul>
-        <li>Revenue loss from inefficient or broken systems</li>
-        <li>Stalled or failed AI / technical initiatives</li>
-        <li>Operational bottlenecks limiting growth</li>
-        <li>Execution gaps in high-stakes environments</li>
-      </ul>
-    </div>
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="#hero" class="nav-wordmark">Northbridge Command</a>
+  <div class="nav-right">
+    <a href="#work" class="nav-link">Work</a>
+    <a href="#capabilities" class="nav-link">Capabilities</a>
+    <a href="#contact" class="nav-link">Contact</a>
+    <a href="#contact" class="nav-engage">Engage</a>
   </div>
+  <button class="nav-mobile-btn" id="mobileBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  <div class="section">
-    <h2>What We Do</h2>
-    <div class="card">
-      <p>
-        We design and deploy systems that <span class="highlight">increase revenue</span>,
-        <span class="highlight">remove inefficiencies</span>, and
-        <span class="highlight">restore execution speed</span>.
-      </p>
-      <p>
-        Work spans AI systems, internal infrastructure, product development,
-        and operational buildouts.
-      </p>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>Case Execution</h2>
-    <div class="card">
-      <p class="highlight">AI Medical Imaging System</p>
-      <ul>
-        <li>Built and deployed end-to-end system (concept → production)</li>
-        <li>40% reduction in diagnostic latency</li>
-        <li>Full ML pipeline and deployment architecture</li>
-        <li>Delivered within 12 months</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>How Engagements Work</h2>
-    <div class="card">
-      <p>
-        Direct, outcome-focused execution. No advisory layers. No excess process.
-      </p>
-      <p>
-        Clear deliverables. Defined timelines. Measurable results.
-      </p>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>Get Started</h2>
-    <div class="card">
-      <p>
-        If the problem is material and execution matters, present it.
-      </p>
-      <a class="btn" href="https://calendly.com/alan-northbridgecommand/private-consultation">Schedule Consultation</a>
-      <p class="subtle">Or contact: alan@northbridgecommand.com</p>
-    </div>
-  </div>
-
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="#work" class="nav-link" onclick="closeDrawer()">Work</a>
+  <a href="#capabilities" class="nav-link" onclick="closeDrawer()">Capabilities</a>
+  <a href="#contact" class="nav-link" onclick="closeDrawer()">Contact</a>
+  <a href="#contact" class="nav-engage" style="align-self:flex-start;margin-top:8px;" onclick="closeDrawer()">Engage</a>
 </div>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-label">Northbridge Command / AI Systems</div>
+    <h1 class="hero-headline">We build AI systems<br>that <em>operate.</em></h1>
+    <p class="hero-sub">Not demos. Not wrappers. Autonomous systems for organizations where decisions have consequences.</p>
+    <div class="hero-ctas">
+      <a href="#work" class="btn-primary">View Our Work</a>
+      <a href="#contact" class="btn-ghost">Get In Touch</a>
+    </div>
+    <div class="hero-terminal">
+      <div class="hero-terminal-line" id="terminalLine">&gt; <span id="terminalText"></span><span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── POSITIONING ── -->
+<section id="positioning">
+  <div class="position-statement">
+    <div class="section-label fade-in">What We Do</div>
+    <h2 class="position-headline fade-in">Complex domains.<br>Autonomous decisions.<br>Built to production standard.</h2>
+    <p class="position-body fade-in">Northbridge Command designs and builds custom AI systems for high-stakes environments. We work with organizations that cannot afford slow, expert-dependent workflows — and need AI that actually runs in the real world.</p>
+    <div class="stats-row fade-in">
+      <div class="stat-item">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Production Systems Built</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">1</div>
+        <div class="stat-label">Granted Patent</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value blue">Limited</div>
+        <div class="stat-label">Engagements Per Year</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORK ── -->
+<section id="work">
+  <div class="section-label fade-in">Selected Work</div>
+  <div class="work-grid">
+
+    <div class="work-card fade-in">
+      <div class="work-domain">Autonomous Systems</div>
+      <div class="work-name">Aphrodite</div>
+      <div class="work-block">
+        <div class="work-block-label">Problem</div>
+        <div class="work-block-text"><strong>Software development cycles</strong> are bottlenecked by human availability. Every iteration requires <strong>an engineer in the loop</strong>, <strong>around the clock</strong>. Speed is capped by human throughput.</div>
+      </div>
+      <div class="work-block">
+        <div class="work-block-label">What We Built</div>
+        <ul class="work-bullets">
+          <li><strong>Voice-commanded AI agent</strong> that receives a spoken brief and begins execution immediately</li>
+          <li><strong>Autonomous coding loop:</strong> writes code, runs it in a sandboxed environment, reads its own logs, and self-corrects</li>
+          <li>Generates a diff of all changes and <strong>holds for human approval</strong> before touching production</li>
+          <li><strong>Persistent vector memory</strong> via ChromaDB retains context across sessions</li>
+          <li><strong>Real-time voice I/O</strong> via Whisper transcription and ElevenLabs TTS</li>
+        </ul>
+      </div>
+      <div class="work-block">
+        <div class="work-block-label">Outcome</div>
+        <div class="work-block-text">A <strong>fully operational agentic coding system</strong> built to production standard. Engineers issue commands by voice. The system plans, writes, tests, diffs, and awaits approval. <strong>Human oversight is preserved. Human bottlenecks are not.</strong></div>
+      </div>
+      <div class="work-tech">
+        <span>Electron</span><span>Claude Sonnet</span><span>ChromaDB</span><span>ElevenLabs</span><span>Whisper</span><span>Sandboxed Execution</span>
+      </div>
+      <div class="work-bottom-label">Internal System — Not Commercially Released</div>
+    </div>
+
+    <div class="work-card fade-in">
+      <div class="work-domain">Healthcare AI</div>
+      <div class="work-name">AI Imaging<br>Diagnostic System</div>
+      <div class="work-block">
+        <div class="work-block-label">Problem</div>
+        <div class="work-block-text"><strong>Early-stage disease</strong> is routinely missed. Radiologists operate under time pressure, <strong>imaging data is siloed across modalities</strong>, and subtle anomalies fall below the threshold of human detection until intervention is no longer effective.</div>
+      </div>
+      <div class="work-block">
+        <div class="work-block-label">What We Built</div>
+        <ul class="work-bullets">
+          <li><strong>Deep learning</strong> inference engine trained on large-scale medical imaging datasets</li>
+          <li>Multi-modality ingestion: <strong>MRI, CT, X-ray, and ultrasound</strong> processed within a <strong>single system</strong></li>
+          <li>Real-time differentiation of <strong>normal vs abnormal tissue</strong> with <strong>probability-scored output</strong></li>
+          <li><strong>Hospital network integration</strong> enabling continuous model improvement from live data</li>
+          <li><strong>Telemedicine layer</strong> allowing remote specialists to review and act on AI findings</li>
+        </ul>
+      </div>
+      <div class="work-block">
+        <div class="work-block-label">Outcome</div>
+        <div class="work-block-text">A <strong>granted patent in India</strong>. A production-grade diagnostic system covering four imaging modalities with <strong>real-time inference</strong>, network integration, and <strong>telemedicine capability</strong> designed in at the architecture level.</div>
+      </div>
+      <div class="work-tech">
+        <span>Deep Learning</span><span>MRI / CT / X-Ray</span><span>Ultrasound</span><span>Real-Time Inference</span><span>HL7 / Hospital Networks</span>
+      </div>
+      <div class="work-bottom-label">Patent Granted — India</div>
+    </div>
+
+    <div class="work-card fade-in">
+      <div class="work-domain">Decision Automation</div>
+      <div class="work-name">Vesper</div>
+      <div class="work-block">
+        <div class="work-block-label">Problem</div>
+        <div class="work-block-text"><strong>High-stakes decisions</strong> under <strong>time pressure</strong> are made poorly. People have the information. They lack a <strong>system that enforces trade-offs</strong>, cuts noise, and tells them exactly what to do with the time available.</div>
+      </div>
+      <div class="work-block">
+        <div class="work-block-label">What We Built</div>
+        <ul class="work-bullets">
+          <li>PDF ingestion pipeline that extracts <strong>structured data from unstructured documents</strong> with zero hallucination tolerance</li>
+          <li><strong>Constraint enforcement layer:</strong> hard deadlines, priority rankings, and time budgets applied deterministically</li>
+          <li><strong>Multi-pass LLM pipeline:</strong> extract, then plan, then <strong>compress to actionable output</strong> only</li>
+          <li><strong>Temperature-controlled inference</strong> at 0.2 for consistent, repeatable decisions</li>
+          <li>Day-by-day output specifying exactly <strong>what to do, in what order, and what to skip</strong></li>
+        </ul>
+      </div>
+      <div class="work-block">
+        <div class="work-block-label">Outcome</div>
+        <div class="work-block-text">A <strong>deterministic decision engine</strong> that converts any document into an actionable plan under constraint. Architecture transfers directly to <strong>legal, financial, clinical, and operational workflows</strong> where documents drive decisions.</div>
+      </div>
+      <div class="work-tech">
+        <span>Gemini 2.5 Flash</span><span>Multi-Pass LLM Pipeline</span><span>PyMuPDF</span><span>Constraint Enforcement</span><span>JSON Schema Extraction</span>
+      </div>
+      <div class="work-bottom-label">Architecture Transferable to Enterprise Workflows</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CAPABILITIES ── -->
+<section id="capabilities">
+  <div class="section-label fade-in">What We Build</div>
+  <div class="capabilities-inner">
+    <div class="cap-row fade-in">
+      <div class="cap-name">Autonomous AI Agents</div>
+      <div class="cap-desc">Systems that plan, act, and iterate without continuous human input.</div>
+    </div>
+    <div class="cap-row fade-in">
+      <div class="cap-name">Voice-First Interfaces</div>
+      <div class="cap-desc">Real-time speech pipelines with LLM reasoning and TTS output.</div>
+    </div>
+    <div class="cap-row fade-in">
+      <div class="cap-name">Document Intelligence</div>
+      <div class="cap-desc">Extraction, classification, and structured reasoning over unstructured text.</div>
+    </div>
+    <div class="cap-row fade-in">
+      <div class="cap-name">Agentic Coding Systems</div>
+      <div class="cap-desc">AI that writes, tests, and proposes code changes — with approval workflows.</div>
+    </div>
+    <div class="cap-row fade-in">
+      <div class="cap-name">Medical AI Systems</div>
+      <div class="cap-desc">Diagnostic tooling with imaging integration and regulatory awareness.</div>
+    </div>
+    <div class="cap-row fade-in">
+      <div class="cap-name">Memory Architecture</div>
+      <div class="cap-desc">Short and long-term context systems for persistent AI agents.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY NORTHBRIDGE ── -->
+<section id="why">
+  <div class="section-label fade-in">Why Northbridge</div>
+  <div class="why-grid">
+    <div class="why-item fade-in">
+      <div class="why-heading">No Wrappers</div>
+      <p class="why-body">We don't build on top of no-code platforms or pre-packaged AI products. Every system is designed from the architecture layer up.</p>
+    </div>
+    <div class="why-item fade-in">
+      <div class="why-heading">Production, Not Prototypes</div>
+      <p class="why-body">Our work is deployed, patented, or architecturally complete. We don't deliver proof-of-concepts and call it done.</p>
+    </div>
+    <div class="why-item fade-in">
+      <div class="why-heading">High-Stakes Domains</div>
+      <p class="why-body">Healthcare. Autonomous systems. Professional workflows. We operate where failure has consequences — and engineer accordingly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <h2 class="contact-headline fade-in">If you need it built properly,<br>let's talk.</h2>
+  <p class="contact-sub fade-in">We take on a limited number of engagements.<br>If your problem is serious, reach out.</p>
+
+  <form class="contact-form fade-in" id="contactForm">
+    <input type="hidden" name="access_key" value="3da0dc3b-4cb4-4d79-a46b-66f954b8cc41">
+    <input type="hidden" name="subject" value="New Engagement Inquiry — Northbridge Command">
+    <input type="hidden" name="from_name" value="Northbridge Command Website">
+    <input type="hidden" name="replyto" id="replyToField" value="">
+    <div class="form-field">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your name" required>
+    </div>
+    <div class="form-field">
+      <label for="org">Organization</label>
+      <input type="text" id="org" name="organization" placeholder="Company or institution">
+    </div>
+    <div class="form-field">
+      <label for="need">What you need built</label>
+      <textarea id="need" name="message" placeholder="Describe the system or problem" required></textarea>
+    </div>
+    <div class="form-field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="your@email.com" required oninput="document.getElementById('replyToField').value=this.value">
+    </div>
+    <button type="submit" class="btn-submit" id="submitBtn">Send</button>
+    <div class="form-status" id="formStatus"></div>
+  </form>
+
+  <div class="contact-footer fade-in">
+    Northbridge Command<br>
+    Toronto, Canada
+  </div>
+</section>
+
+<script>
+/* ── NAV SCROLL ── */
+const nav = document.getElementById('nav')
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40)
+})
+
+/* ── MOBILE DRAWER ── */
+const mobileBtn    = document.getElementById('mobileBtn')
+const mobileDrawer = document.getElementById('mobileDrawer')
+function closeDrawer() {
+  mobileBtn.classList.remove('open')
+  mobileDrawer.classList.remove('open')
+}
+mobileBtn.addEventListener('click', () => {
+  const isOpen = mobileDrawer.classList.contains('open')
+  isOpen ? closeDrawer() : (mobileBtn.classList.add('open'), mobileDrawer.classList.add('open'))
+})
+
+/* ── TYPEWRITER ── */
+const phrases = [
+  'system.status: OPERATIONAL',
+  'last_deployment: CLASSIFIED',
+  'threat_level: NEGLIGIBLE'
+]
+let phraseIdx = 0, charIdx = 0, deleting = false
+const terminalText = document.getElementById('terminalText')
+function typeWriter() {
+  const phrase = phrases[phraseIdx]
+  if (!deleting) {
+    terminalText.textContent = phrase.slice(0, charIdx + 1)
+    charIdx++
+    if (charIdx === phrase.length) {
+      deleting = true
+      setTimeout(typeWriter, 2200)
+      return
+    }
+    setTimeout(typeWriter, 52)
+  } else {
+    terminalText.textContent = phrase.slice(0, charIdx - 1)
+    charIdx--
+    if (charIdx === 0) {
+      deleting = false
+      phraseIdx = (phraseIdx + 1) % phrases.length
+      setTimeout(typeWriter, 400)
+      return
+    }
+    setTimeout(typeWriter, 28)
+  }
+}
+setTimeout(typeWriter, 1600)
+
+/* ── INTERSECTION OBSERVER ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const el = entry.target
+      const delay = el.dataset.delay || 0
+      setTimeout(() => el.classList.add('visible'), delay)
+      observer.unobserve(el)
+    }
+  })
+}, { threshold: 0.12 })
+
+document.querySelectorAll('.fade-in').forEach((el, i) => {
+  el.dataset.delay = (i % 4) * 80
+  observer.observe(el)
+})
+
+/* ── CONTACT FORM ── */
+const form       = document.getElementById('contactForm')
+const submitBtn  = document.getElementById('submitBtn')
+const formStatus = document.getElementById('formStatus')
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  submitBtn.disabled = true
+  submitBtn.textContent = 'Sending...'
+  formStatus.className = 'form-status'
+  formStatus.textContent = ''
+
+  const formData = new FormData(form)
+  const object   = Object.fromEntries(formData)
+  object.email_to = 'alan@northbridgecommand.com'
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(object)
+    })
+    const data = await res.json()
+    if (data.success) {
+      formStatus.className = 'form-status success'
+      formStatus.textContent = '> Message received. We will be in touch.'
+      form.reset()
+    } else {
+      throw new Error(data.message)
+    }
+  } catch (err) {
+    formStatus.className = 'form-status error'
+    formStatus.textContent = '> Transmission failed. Email alan@northbridgecommand.com directly.'
+  } finally {
+    submitBtn.disabled = false
+    submitBtn.textContent = 'Send'
+  }
+})
+</script>
 
 </body>
 </html>
