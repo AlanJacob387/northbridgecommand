@@ -215,9 +215,10 @@ function cd(){
   </div>
 </div>
 
-<script src="config.js"></script>
 <script>
 const CREDS={'demo@grandsuiteshotel.com':{p:'meridian2026',h:'Grand Suites Hotel'}}
+const LIVE_ROOM='318'
+const POLL_MS=2000
 let cf=1,rs={},sim=null,poll=null,clk=null,lu=Date.now()
 
 function rooms(f){
@@ -229,6 +230,15 @@ function rooms(f){
 }
 function allR(){const a=[];for(let f=1;f<=3;f++){const{top,bot}=rooms(f);a.push(...top,...bot)}return a}
 function initS(){allR().forEach(r=>{rs[r]=Math.random()<0.62})}
+
+async function loadNgrokUrl(){
+  try{
+    const res=await fetch('../ngrok.json?t='+Date.now())
+    if(!res.ok)return''
+    const data=await res.json()
+    return data.url||''
+  }catch{return''}
+}
 
 function login(){
   const e=document.getElementById('ei').value.trim().toLowerCase()
@@ -268,23 +278,19 @@ function render(f){
   const wrap=document.getElementById('fp')
   const{top,bot}=rooms(f)
   wrap.innerHTML=''
-
   const tl=document.createElement('div');tl.className='fp-corridor-label';tl.textContent='North corridor';wrap.appendChild(tl)
   const tr=document.createElement('div');tr.className='fp-row';top.forEach(r=>tr.appendChild(mkCard(r)));wrap.appendChild(tr)
-
   const hall=document.createElement('div');hall.className='fp-hall'
   hall.innerHTML='<div class="fp-hall-line"></div><div class="fp-hall-txt">Hallway</div><div class="fp-hall-line"></div>'
   wrap.appendChild(hall)
-
   const bl=document.createElement('div');bl.className='fp-corridor-label';bl.textContent='South corridor';wrap.appendChild(bl)
   const br=document.createElement('div');br.className='fp-row';bot.forEach(r=>br.appendChild(mkCard(r)));wrap.appendChild(br)
-
   updSum()
 }
 
 function mkCard(r){
   const o=rs[r]
-  const isLive=typeof CONFIG!=='undefined'&&r===CONFIG.live_room
+  const isLive=r===LIVE_ROOM
   const c=document.createElement('div')
   c.className='rc '+(o?'occ':'vac')+(isLive?' live live-tag':'')
   c.id='r-'+r
@@ -325,24 +331,24 @@ function startSim(){
     const n=Math.floor(Math.random()*3)+1
     for(let i=0;i<n;i++){
       const r=all[Math.floor(Math.random()*all.length)]
-      if(typeof CONFIG!=='undefined'&&r===CONFIG.live_room)continue
+      if(r===LIVE_ROOM)continue
       upd(r,!rs[r])
     }
     bump()
   },15000+Math.random()*10000)
 }
 
-function startPoll(){
-  if(typeof CONFIG==='undefined'||!CONFIG.ngrok_url)return
-  const iv=CONFIG.poll_interval_ms||2000
+async function startPoll(){
+  const ngrokUrl=await loadNgrokUrl()
+  if(!ngrokUrl)return
   poll=setInterval(async()=>{
     try{
-      const res=await fetch(CONFIG.ngrok_url+'/status',{signal:AbortSignal.timeout(3000)})
+      const res=await fetch(ngrokUrl+'/status',{signal:AbortSignal.timeout(3000)})
       if(!res.ok)return
       const d=await res.json()
       if(d&&typeof d.occupied==='boolean'&&d.room){upd(String(d.room),d.occupied);bump()}
     }catch{}
-  },iv)
+  },POLL_MS)
 }
 
 function startClk(){
