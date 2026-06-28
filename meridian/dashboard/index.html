@@ -193,10 +193,8 @@ html,body{height:100%;background:#080808;color:#F5F0E8;font-family:'SF Mono','Fi
 
 <script>
 const CREDS={'demo@grandsuiteshotel.com':{p:'meridian2026',h:'Grand Suites Hotel'}}
-const LIVE_ROOM='318'
 const POLL_MS=2000
-const NGROK_URL='https://shrug-clarity-clicker.ngrok-free.dev'
-let cf=1,rs={},sim=null,poll=null,clk=null,lu=Date.now()
+let cf=1,rs={},sim=null,clk=null,lu=Date.now()
 
 function rooms(f){
   const n=f*100
@@ -207,21 +205,6 @@ function rooms(f){
 }
 function allR(){const a=[];for(let f=1;f<=3;f++){const{top,bot}=rooms(f);a.push(...top,...bot)}return a}
 function initS(){allR().forEach(r=>{rs[r]=Math.random()<0.62})}
-
-async function startPoll(){
-  if(!NGROK_URL)return
-  poll=setInterval(async()=>{
-    try{
-      const res=await fetch(NGROK_URL+'/status',{
-        signal:AbortSignal.timeout(3000),
-        headers:{'ngrok-skip-browser-warning':'1'}
-      })
-      if(!res.ok)return
-      const d=await res.json()
-      if(d&&typeof d.occupied==='boolean'&&d.room){upd(String(d.room),d.occupied);bump()}
-    }catch{}
-  },POLL_MS)
-}
 
 function login(){
   const e=document.getElementById('ei').value.trim().toLowerCase()
@@ -241,7 +224,7 @@ function login(){
 function showDash(){
   document.getElementById('L').style.display='none'
   document.getElementById('D').style.display='flex'
-  initS();render(cf);startSim();startPoll();startClk()
+  initS();render(cf);startSim();startClk()
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -294,9 +277,8 @@ function render(f){
 
 function mkCard(r){
   const o=rs[r]
-  const isLive=r===LIVE_ROOM
   const c=document.createElement('div')
-  c.className='rc '+(o?'occ':'vac')+(isLive?' live live-tag':'')
+  c.className='rc '+(o?'occ':'vac')
   c.id='r-'+r
   c.innerHTML=`<div class="rc-num">${r}</div><div class="rc-status"><div class="rc-dot"></div><span>${o?'Occ':'Vac'}</span></div>`
   return c
@@ -335,7 +317,6 @@ function startSim(){
     const n=Math.floor(Math.random()*3)+1
     for(let i=0;i<n;i++){
       const r=all[Math.floor(Math.random()*all.length)]
-      if(r===LIVE_ROOM)continue
       upd(r,!rs[r])
     }
     bump()
@@ -356,7 +337,6 @@ function startClk(){
 
 function stopAll(){
   if(sim){clearInterval(sim);sim=null}
-  if(poll){clearInterval(poll);poll=null}
   if(clk){clearInterval(clk);clk=null}
 }
 </script>
