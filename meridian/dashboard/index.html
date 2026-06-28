@@ -5,366 +5,408 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meridian — Dashboard</title>
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;background:#080808;color:#F5F0E8;font-family:'SF Mono','Fira Mono','Consolas','Menlo',monospace;font-size:13px;line-height:1.5;overflow:hidden;}
-::-webkit-scrollbar{width:3px;height:3px;}
-::-webkit-scrollbar-track{background:#0e0e0e;}
-::-webkit-scrollbar-thumb{background:#2a2010;}
-:root{
-  --black:#080808;
-  --s1:#0e0e0e;
-  --s2:#141414;
-  --s3:#1a1a1a;
-  --gold:#C9A84C;
-  --gold-dim:rgba(201,168,76,0.18);
-  --gold-line:rgba(201,168,76,0.22);
-  --gold-line-str:rgba(201,168,76,0.42);
-  --white:#F5F0E8;
-  --muted:#6B5F50;
-  --dim:#A89880;
-  --occ:#e67e22;
-  --occ-bg:rgba(230,126,34,0.1);
-  --occ-line:rgba(230,126,34,0.32);
-  --vac:#27ae60;
-  --vac-bg:rgba(39,174,96,0.08);
-  --vac-line:rgba(39,174,96,0.25);
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; background: #080808; color: #F5F0E8; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; overflow: hidden; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #2a2010; border-radius: 2px; }
+
+:root {
+  --black:      #080808;
+  --black-soft: #0e0e0e;
+  --black-card: #141414;
+  --black-mid:  #1a1a1a;
+  --border:     rgba(201,168,76,0.18);
+  --border-str: rgba(201,168,76,0.38);
+  --gold:       #C9A84C;
+  --gold-dim:   #8B6914;
+  --gold-sub:   rgba(201,168,76,0.08);
+  --white:      #F5F0E8;
+  --white-dim:  #A89880;
+  --white-muted:#6B5F50;
+  --occ:        #ef4444;
+  --occ-bg:     rgba(239,68,68,0.12);
+  --occ-border: rgba(239,68,68,0.35);
+  --vac:        #22c55e;
+  --vac-bg:     rgba(34,197,94,0.1);
+  --vac-border: rgba(34,197,94,0.3);
 }
 
-/* ── LOGIN ── */
-#L{
-  height:100vh;display:flex;align-items:center;justify-content:center;
-  background-image:repeating-linear-gradient(
-    0deg,transparent,transparent 39px,rgba(201,168,76,0.025) 39px,rgba(201,168,76,0.025) 40px
-  ),repeating-linear-gradient(
-    90deg,transparent,transparent 39px,rgba(201,168,76,0.025) 39px,rgba(201,168,76,0.025) 40px
-  );
+/* LOGIN */
+#loginScreen {
+  height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: #080808;
+  background-image:
+    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(201,168,76,0.03) 79px, rgba(201,168,76,0.03) 80px),
+    repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(201,168,76,0.03) 79px, rgba(201,168,76,0.03) 80px);
 }
-.lbox{width:360px;border:1px solid var(--gold-line-str);background:var(--s2);}
-.lhead{padding:28px 32px 22px;border-bottom:1px solid var(--gold-line);background:var(--s1);}
-.lprod{font-family:Georgia,serif;font-size:1.5rem;font-weight:700;letter-spacing:0.08em;color:var(--gold);line-height:1;}
-.lco{font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--muted);margin-top:5px;}
-.lbody{padding:24px 32px 28px;}
-.lf{margin-bottom:12px;}
-.lf label{display:block;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.lf input{
-  width:100%;background:var(--s1);border:1px solid var(--gold-line);color:var(--white);
-  font-family:inherit;font-size:0.82rem;padding:9px 12px;outline:none;
-  transition:border-color 0.18s;
-}
-.lf input:focus{border-color:var(--gold);}
-.lf input::placeholder{color:var(--muted);opacity:0.6;}
-.lbtn{
-  width:100%;background:var(--gold);border:none;color:#080808;
-  font-family:inherit;font-size:0.68rem;font-weight:700;letter-spacing:0.2em;
-  text-transform:uppercase;padding:12px;cursor:pointer;margin-top:4px;
-  transition:background 0.18s;
-}
-.lbtn:hover{background:#E8CC82;}
-.lerr{font-size:0.65rem;color:var(--occ);margin-top:9px;text-align:center;min-height:16px;letter-spacing:0.06em;}
+.login-box { width: 380px; border: 1px solid var(--border); background: var(--black-card); }
+.login-head { padding: 32px 36px 24px; border-bottom: 1px solid var(--border); background: var(--black-soft); }
+.login-product { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.1em; color: var(--gold); font-family: Georgia, serif; margin-bottom: 4px; }
+.login-company { font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--white-muted); font-family: monospace; }
+.login-body { padding: 28px 36px 32px; }
+.login-field { margin-bottom: 14px; }
+.login-field label { display: block; font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--white-muted); font-family: monospace; margin-bottom: 7px; }
+.login-field input { width: 100%; background: var(--black-soft); border: 1px solid var(--border); color: var(--white); font-size: 0.875rem; padding: 10px 14px; outline: none; border-radius: 0; transition: border-color 0.2s; -webkit-appearance: none; }
+.login-field input:focus { border-color: var(--gold); }
+.login-field input::placeholder { color: var(--white-muted); opacity: 0.5; }
+.login-btn { width: 100%; background: var(--gold); border: none; color: #080808; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 13px; cursor: pointer; margin-top: 6px; transition: background 0.2s; }
+.login-btn:hover { background: #E8CC82; }
+.login-btn:disabled { opacity: 0.6; cursor: default; }
+.login-error { font-size: 0.7rem; color: var(--occ); margin-top: 10px; text-align: center; min-height: 18px; font-family: monospace; letter-spacing: 0.08em; }
 
-/* ── DASHBOARD ── */
-#D{display:none;height:100vh;flex-direction:column;overflow:hidden;}
+/* DASHBOARD */
+#dashScreen { display: none; height: 100vh; flex-direction: column; overflow: hidden; }
 
-/* TOPBAR */
-.tb{
-  height:48px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;border-bottom:1px solid var(--gold-line);background:var(--s1);flex-shrink:0;
-}
-.tb-l{display:flex;align-items:center;gap:16px;}
-.tb-logo{font-family:Georgia,serif;font-size:1.05rem;font-weight:700;letter-spacing:0.1em;color:var(--gold);}
-.tb-sep{width:1px;height:16px;background:var(--gold-line);}
-.tb-hotel{font-size:0.72rem;color:var(--dim);letter-spacing:0.06em;}
-.tb-r{display:flex;align-items:center;gap:16px;}
-.live-badge{display:flex;align-items:center;gap:6px;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--vac);}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--vac);animation:lp 1.6s ease-in-out infinite;}
-@keyframes lp{0%,100%{opacity:1}50%{opacity:0.3}}
-.tb-time{font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);}
-.tb-out{
-  font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);
-  background:none;border:1px solid var(--gold-line);padding:4px 10px;cursor:pointer;
-  transition:color 0.18s,border-color 0.18s;
-}
-.tb-out:hover{color:var(--gold);border-color:var(--gold);}
+.topbar { height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; border-bottom: 1px solid var(--border); background: var(--black-soft); flex-shrink: 0; }
+.topbar-left { display: flex; align-items: center; gap: 20px; }
+.topbar-logo { font-family: Georgia, serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; color: var(--gold); }
+.topbar-divider { width: 1px; height: 20px; background: var(--border); }
+.topbar-hotel { font-size: 0.78rem; font-weight: 500; color: var(--white); letter-spacing: 0.02em; }
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+.live-badge { display: flex; align-items: center; gap: 7px; font-family: monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--vac); }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--vac); animation: livepulse 1.5s ease-in-out infinite; }
+@keyframes livepulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.75)} }
+.last-updated { font-family: monospace; font-size: 0.6rem; letter-spacing: 0.12em; color: var(--white-muted); }
+.logout-btn { font-family: monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white-muted); background: none; border: 1px solid var(--border); padding: 5px 12px; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
+.logout-btn:hover { color: var(--gold); border-color: var(--gold); }
 
-/* STATS + FLOOR TABS in one row */
-.ctrl{
-  height:38px;display:flex;align-items:stretch;
-  border-bottom:1px solid var(--gold-line);background:var(--black);flex-shrink:0;
-}
-.stat{
-  display:flex;align-items:center;gap:8px;
-  padding:0 18px;border-right:1px solid var(--gold-line);
-}
-.stat-lbl{font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);}
-.stat-val{font-size:0.8rem;font-weight:700;color:var(--white);font-variant-numeric:tabular-nums;}
-.stat-val.o{color:var(--occ);}
-.stat-val.v{color:var(--vac);}
-.stat-val.r{color:var(--gold);}
-.floor-tabs{display:flex;margin-left:auto;}
-.ftab{
-  height:100%;padding:0 18px;font-family:inherit;font-size:0.6rem;letter-spacing:0.18em;
-  text-transform:uppercase;color:var(--muted);background:none;border:none;
-  border-left:1px solid var(--gold-line);border-bottom:2px solid transparent;
-  cursor:pointer;transition:color 0.18s,border-color 0.18s;
-}
-.ftab:hover{color:var(--dim);}
-.ftab.on{color:var(--gold);border-bottom-color:var(--gold);}
+.summary-bar { display: flex; align-items: center; gap: 0; padding: 0 24px; height: 44px; border-bottom: 1px solid var(--border); background: var(--black); flex-shrink: 0; }
+.summary-item { display: flex; align-items: center; gap: 8px; padding: 0 20px 0 0; margin-right: 20px; border-right: 1px solid var(--border); }
+.summary-item:last-child { border-right: none; }
+.summary-label { font-family: monospace; font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-muted); }
+.summary-val { font-size: 0.88rem; font-weight: 600; color: var(--white); font-variant-numeric: tabular-nums; }
+.summary-val.occ { color: var(--occ); }
+.summary-val.vac { color: var(--vac); }
+.summary-val.rate { color: var(--gold); }
 
-/* MAIN */
-.main{flex:1;overflow-y:auto;padding:16px 20px;background:var(--black);}
+.floor-tabs { display: flex; gap: 0; padding: 0 24px; border-bottom: 1px solid var(--border); background: var(--black-soft); flex-shrink: 0; }
+.floor-tab { font-family: monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-muted); padding: 12px 20px; cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; background: none; border-top: none; border-left: none; border-right: none; }
+.floor-tab:hover { color: var(--white); }
+.floor-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-/* FLOOR PLAN */
-.fp-wrap{max-width:1100px;}
-.fp-corridor-label{
-  font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--muted);
-  margin-bottom:6px;padding-left:1px;
-}
-.fp-row{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;margin-bottom:5px;}
-.fp-hall{
-  height:14px;display:flex;align-items:center;margin-bottom:5px;
-}
-.fp-hall-line{flex:1;height:1px;background:rgba(201,168,76,0.06);}
-.fp-hall-txt{
-  font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;
-  color:rgba(201,168,76,0.18);padding:0 8px;
-}
+.dash-content { flex: 1; overflow-y: auto; padding: 20px 24px; background: var(--black); }
 
-/* ROOM CARD */
-.rc{
-  background:var(--s2);border:1px solid rgba(201,168,76,0.1);
-  padding:6px 5px 5px;position:relative;
-  transition:background 0.45s,border-color 0.45s;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;min-height:56px;cursor:default;
-}
-.rc.occ{background:var(--occ-bg);border-color:var(--occ-line);}
-.rc.vac{background:var(--vac-bg);border-color:var(--vac-line);}
-.rc.live{border-left:2px solid var(--gold);}
-.rc-num{font-size:0.58rem;letter-spacing:0.08em;color:var(--muted);}
-.rc-status{font-size:0.55rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:3px;}
-.rc.occ .rc-status{color:var(--occ);}
-.rc.vac .rc-status{color:var(--vac);}
-.rc-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;}
-.rc.occ .rc-dot{background:var(--occ);animation:op 2.2s ease-in-out infinite;}
-.rc.vac .rc-dot{background:var(--vac);opacity:0.65;}
-@keyframes op{0%,100%{opacity:1}50%{opacity:0.3}}
-.rc.live-tag::after{
-  content:'LIVE';position:absolute;top:2px;right:3px;
-  font-size:0.4rem;letter-spacing:0.1em;color:var(--gold);
-  background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);
-  padding:1px 3px;line-height:1.4;
-}
-.rc.flip{animation:fp 0.3s ease;}
-@keyframes fp{0%{opacity:1}45%{opacity:0;transform:scaleY(0.8)}100%{opacity:1;transform:scaleY(1)}}
+.corridor-wrap { max-width: 960px; }
+.corridor-label { font-family: monospace; font-size: 0.55rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--white-muted); margin-bottom: 8px; padding-left: 2px; }
+.corridor { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; margin-bottom: 6px; }
+.corridor-gap { height: 18px; display: flex; align-items: center; margin: 0 0 6px 0; }
+.corridor-gap-line { flex: 1; height: 1px; background: rgba(201,168,76,0.08); }
+.corridor-gap-text { font-family: monospace; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(201,168,76,0.2); padding: 0 10px; }
+
+.room-card { background: var(--black-card); border: 1px solid var(--border); padding: 8px 6px 7px; position: relative; transition: background 0.4s, border-color 0.4s; cursor: default; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+.room-card.occupied { background: var(--occ-bg); border-color: var(--occ-border); }
+.room-card.vacant { background: var(--vac-bg); border-color: var(--vac-border); }
+.room-card.live-sensor::after { content: 'LIVE'; position: absolute; top: 3px; right: 3px; font-family: monospace; font-size: 0.42rem; letter-spacing: 0.1em; color: var(--gold); background: var(--gold-sub); border: 1px solid rgba(201,168,76,0.3); padding: 1px 4px; line-height: 1.4; }
+.room-num { font-family: monospace; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--white-muted); }
+.room-status { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
+.room-card.occupied .room-status { color: var(--occ); }
+.room-card.vacant .room-status { color: var(--vac); }
+.status-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.room-card.occupied .status-dot { background: var(--occ); animation: occpulse 2s ease-in-out infinite; }
+.room-card.vacant .status-dot { background: var(--vac); opacity: 0.7; }
+@keyframes occpulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.room-card.flipping { animation: flipcard 0.35s ease; }
+@keyframes flipcard { 0%{opacity:1} 40%{opacity:0.2;transform:scaleY(0.85)} 100%{opacity:1;transform:scaleY(1)} }
 </style>
 </head>
 <body>
 
-<script>
-function cd(){
-  document.getElementById('mobBtn')&&document.getElementById('mobBtn').classList.remove('open');
-  document.getElementById('mobDrawer')&&document.getElementById('mobDrawer').classList.remove('open');
-}
-</script>
-
-<!-- LOGIN -->
-<div id="L">
-  <div class="lbox">
-    <div class="lhead">
-      <div class="lprod">Meridian</div>
-      <div class="lco">by Northbridge Command</div>
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-head">
+      <div class="login-product">Meridian</div>
+      <div class="login-company">by Northbridge Command</div>
     </div>
-    <div class="lbody">
-      <div class="lf"><label>Email</label><input type="email" id="ei" placeholder="your@hotel.com" autocomplete="username"></div>
-      <div class="lf"><label>Password</label><input type="password" id="pi" placeholder="••••••••" autocomplete="current-password"></div>
-      <button class="lbtn" onclick="login()">Sign in</button>
-      <div class="lerr" id="le"></div>
+    <div class="login-body">
+      <div class="login-field">
+        <label for="emailIn">Email</label>
+        <input type="email" id="emailIn" placeholder="your@hotel.com" autocomplete="username">
+      </div>
+      <div class="login-field">
+        <label for="passIn">Password</label>
+        <input type="password" id="passIn" placeholder="••••••••••" autocomplete="current-password">
+      </div>
+      <button class="login-btn" id="loginBtn" onclick="attemptLogin()">Sign In</button>
+      <div class="login-error" id="loginError"></div>
     </div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="D">
-  <div class="tb">
-    <div class="tb-l">
-      <div class="tb-logo">Meridian</div>
-      <div class="tb-sep"></div>
-      <div class="tb-hotel" id="hn">Grand Suites Hotel</div>
+<div id="dashScreen">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">Meridian</div>
+      <div class="topbar-divider"></div>
+      <div class="topbar-hotel" id="hotelName">Grand Suites Hotel</div>
     </div>
-    <div class="tb-r">
-      <div class="tb-time" id="tu">Updated just now</div>
+    <div class="topbar-right">
+      <div class="last-updated" id="lastUpdated">Updated just now</div>
       <div class="live-badge"><div class="live-dot"></div>Live</div>
-      <button class="tb-out" onclick="logout()">Sign out</button>
+      <button class="logout-btn" onclick="logout()">Sign Out</button>
     </div>
   </div>
-
-  <div class="ctrl">
-    <div class="stat"><span class="stat-lbl">Rooms</span><span class="stat-val" id="sT">24</span></div>
-    <div class="stat"><span class="stat-lbl">Occupied</span><span class="stat-val o" id="sO">—</span></div>
-    <div class="stat"><span class="stat-lbl">Vacant</span><span class="stat-val v" id="sV">—</span></div>
-    <div class="stat"><span class="stat-lbl">Rate</span><span class="stat-val r" id="sR">—</span></div>
-    <div class="floor-tabs">
-      <button class="ftab on" onclick="sf(1,this)">Floor 1</button>
-      <button class="ftab" onclick="sf(2,this)">Floor 2</button>
-      <button class="ftab" onclick="sf(3,this)">Floor 3</button>
-    </div>
+  <div class="summary-bar">
+    <div class="summary-item"><span class="summary-label">Total Rooms</span><span class="summary-val" id="sumTotal">24</span></div>
+    <div class="summary-item"><span class="summary-label">Occupied</span><span class="summary-val occ" id="sumOcc">—</span></div>
+    <div class="summary-item"><span class="summary-label">Vacant</span><span class="summary-val vac" id="sumVac">—</span></div>
+    <div class="summary-item"><span class="summary-label">Occupancy Rate</span><span class="summary-val rate" id="sumRate">—</span></div>
   </div>
-
-  <div class="main">
-    <div class="fp-wrap" id="fp"></div>
+  <div class="floor-tabs">
+    <button class="floor-tab active" onclick="selectFloor(1, this)">Floor 1</button>
+    <button class="floor-tab" onclick="selectFloor(2, this)">Floor 2</button>
+    <button class="floor-tab" onclick="selectFloor(3, this)">Floor 3</button>
+  </div>
+  <div class="dash-content">
+    <div class="corridor-wrap" id="corridorWrap"></div>
   </div>
 </div>
 
 <script>
-const CREDS={'demo@grandsuiteshotel.com':{p:'meridian2026',h:'Grand Suites Hotel'}}
-const LIVE_ROOM='318'
-const POLL_MS=2000
-let cf=1,rs={},sim=null,poll=null,clk=null,lu=Date.now()
+// ── DEFAULT CONFIG (overridden by config.js) ──
+var CONFIG = { ngrok_url: '', live_room: '318', poll_interval_ms: 2000 };
+</script>
+<script src="config.js"></script>
+<script>
+const CREDS = {
+  'demo@grandsuiteshotel.com': { pass: 'meridian2026', hotel: 'Grand Suites Hotel' }
+}
 
-function rooms(f){
-  const n=f*100
-  return{
-    top:Array.from({length:12},(_,i)=>String(n+i+1)),
-    bot:Array.from({length:12},(_,i)=>String(n+i+13))
+let currentFloor = 1
+let roomStates   = {}
+let simInterval  = null
+let pollInterval = null
+let clockInterval= null
+let lastUpdate   = Date.now()
+
+function getRoomsForFloor(floor) {
+  const p = floor * 100
+  return {
+    top:    Array.from({length:12}, (_,i) => String(p + i + 1)),
+    bottom: Array.from({length:12}, (_,i) => String(p + i + 13))
   }
 }
-function allR(){const a=[];for(let f=1;f<=3;f++){const{top,bot}=rooms(f);a.push(...top,...bot)}return a}
-function initS(){allR().forEach(r=>{rs[r]=Math.random()<0.62})}
 
-async function loadNgrokUrl(){
-  try{
-    const res=await fetch('../ngrok.json?t='+Date.now())
-    if(!res.ok)return''
-    const data=await res.json()
-    return data.url||''
-  }catch{return''}
+function allRooms() {
+  const all = []
+  for (let f = 1; f <= 3; f++) {
+    const { top, bottom } = getRoomsForFloor(f)
+    all.push(...top, ...bottom)
+  }
+  return all
 }
 
-function login(){
-  const e=document.getElementById('ei').value.trim().toLowerCase()
-  const p=document.getElementById('pi').value
-  const er=document.getElementById('le')
-  if(CREDS[e]&&CREDS[e].p===p){
-    er.textContent=''
-    document.getElementById('hn').textContent=CREDS[e].h
-    document.getElementById('L').style.display='none'
-    document.getElementById('D').style.display='flex'
-    initS();render(cf);startSim();startPoll();startClk()
-  }else{er.textContent='Invalid credentials.';document.getElementById('pi').value=''}
+function initStates() {
+  allRooms().forEach(r => { roomStates[r] = Math.random() < 0.62 })
 }
-document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('pi').addEventListener('keydown',e=>{if(e.key==='Enter')login()})
-  document.getElementById('ei').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('pi').focus()})
-})
 
-function logout(){
+// ── LOGIN ──
+function attemptLogin() {
+  const email = document.getElementById('emailIn').value.trim().toLowerCase()
+  const pass  = document.getElementById('passIn').value
+  const err   = document.getElementById('loginError')
+  const btn   = document.getElementById('loginBtn')
+
+  if (CREDS[email] && CREDS[email].pass === pass) {
+    err.textContent = ''
+    btn.disabled = true
+    btn.textContent = 'Signing in...'
+    document.getElementById('hotelName').textContent = CREDS[email].hotel
+    sessionStorage.setItem('meridian_auth', JSON.stringify({ email, hotel: CREDS[email].hotel }))
+    showDashboard()
+  } else {
+    err.textContent = 'Invalid credentials.'
+    document.getElementById('passIn').value = ''
+  }
+}
+
+function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none'
+  document.getElementById('dashScreen').style.display  = 'flex'
+  initStates()
+  renderFloor(currentFloor)
+  startSimulation()
+  startLivePolling()
+  startClock()
+}
+
+document.getElementById('passIn').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin() })
+document.getElementById('emailIn').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('passIn').focus() })
+
+function logout() {
   stopAll()
-  document.getElementById('D').style.display='none'
-  document.getElementById('L').style.display='flex'
-  document.getElementById('ei').value=''
-  document.getElementById('pi').value=''
-  document.getElementById('le').textContent=''
-  cf=1;document.querySelectorAll('.ftab').forEach((t,i)=>t.classList.toggle('on',i===0))
+  sessionStorage.removeItem('meridian_auth')
+  document.getElementById('dashScreen').style.display  = 'none'
+  document.getElementById('loginScreen').style.display = 'flex'
+  document.getElementById('emailIn').value = ''
+  document.getElementById('passIn').value  = ''
+  document.getElementById('loginError').textContent = ''
+  document.getElementById('loginBtn').disabled = false
+  document.getElementById('loginBtn').textContent = 'Sign In'
+  currentFloor = 1
+  document.querySelectorAll('.floor-tab').forEach((t,i) => t.classList.toggle('active', i===0))
 }
 
-function sf(f,btn){
-  cf=f
-  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'))
-  btn.classList.add('on')
-  render(f)
+// ── RESTORE SESSION ──
+;(function() {
+  const saved = sessionStorage.getItem('meridian_auth')
+  if (saved) {
+    try {
+      const { hotel } = JSON.parse(saved)
+      document.getElementById('hotelName').textContent = hotel
+      showDashboard()
+    } catch(_) { sessionStorage.removeItem('meridian_auth') }
+  }
+})()
+
+// ── FLOOR SELECT ──
+function selectFloor(floor, btn) {
+  currentFloor = floor
+  document.querySelectorAll('.floor-tab').forEach(t => t.classList.remove('active'))
+  btn.classList.add('active')
+  renderFloor(floor)
 }
 
-function render(f){
-  const wrap=document.getElementById('fp')
-  const{top,bot}=rooms(f)
-  wrap.innerHTML=''
-  const tl=document.createElement('div');tl.className='fp-corridor-label';tl.textContent='North corridor';wrap.appendChild(tl)
-  const tr=document.createElement('div');tr.className='fp-row';top.forEach(r=>tr.appendChild(mkCard(r)));wrap.appendChild(tr)
-  const hall=document.createElement('div');hall.className='fp-hall'
-  hall.innerHTML='<div class="fp-hall-line"></div><div class="fp-hall-txt">Hallway</div><div class="fp-hall-line"></div>'
-  wrap.appendChild(hall)
-  const bl=document.createElement('div');bl.className='fp-corridor-label';bl.textContent='South corridor';wrap.appendChild(bl)
-  const br=document.createElement('div');br.className='fp-row';bot.forEach(r=>br.appendChild(mkCard(r)));wrap.appendChild(br)
-  updSum()
+// ── RENDER FLOOR ──
+function renderFloor(floor) {
+  const wrap = document.getElementById('corridorWrap')
+  const { top, bottom } = getRoomsForFloor(floor)
+  wrap.innerHTML = ''
+
+  const topLabel = document.createElement('div')
+  topLabel.className = 'corridor-label'
+  topLabel.textContent = 'North Corridor'
+  wrap.appendChild(topLabel)
+
+  const topRow = document.createElement('div')
+  topRow.className = 'corridor'
+  top.forEach(r => topRow.appendChild(makeCard(r)))
+  wrap.appendChild(topRow)
+
+  const gap = document.createElement('div')
+  gap.className = 'corridor-gap'
+  gap.innerHTML = '<div class="corridor-gap-line"></div><div class="corridor-gap-text">Hallway</div><div class="corridor-gap-line"></div>'
+  wrap.appendChild(gap)
+
+  const botLabel = document.createElement('div')
+  botLabel.className = 'corridor-label'
+  botLabel.textContent = 'South Corridor'
+  wrap.appendChild(botLabel)
+
+  const botRow = document.createElement('div')
+  botRow.className = 'corridor'
+  bottom.forEach(r => botRow.appendChild(makeCard(r)))
+  wrap.appendChild(botRow)
+
+  updateSummary()
 }
 
-function mkCard(r){
-  const o=rs[r]
-  const isLive=r===LIVE_ROOM
-  const c=document.createElement('div')
-  c.className='rc '+(o?'occ':'vac')+(isLive?' live live-tag':'')
-  c.id='r-'+r
-  c.innerHTML=`<div class="rc-num">${r}</div><div class="rc-status"><div class="rc-dot"></div><span>${o?'Occ':'Vac'}</span></div>`
-  return c
+function makeCard(roomNum) {
+  const occ    = roomStates[roomNum]
+  const isLive = roomNum === String(CONFIG.live_room)
+  const card   = document.createElement('div')
+  card.className = 'room-card ' + (occ ? 'occupied' : 'vacant') + (isLive ? ' live-sensor' : '')
+  card.id = 'room-' + roomNum
+
+  const num = document.createElement('div')
+  num.className = 'room-num'
+  num.textContent = roomNum
+
+  const status = document.createElement('div')
+  status.className = 'room-status'
+  const dot = document.createElement('div')
+  dot.className = 'status-dot'
+  const label = document.createElement('span')
+  label.textContent = occ ? 'Occupied' : 'Vacant'
+  status.appendChild(dot)
+  status.appendChild(label)
+  card.appendChild(num)
+  card.appendChild(status)
+  return card
 }
 
-function upd(r,o){
-  if(rs[r]===o)return
-  rs[r]=o
-  const c=document.getElementById('r-'+r)
-  if(!c)return
-  c.classList.add('flip')
-  setTimeout(()=>{
-    c.classList.remove('occ','vac','flip')
-    c.classList.add(o?'occ':'vac')
-    c.querySelector('.rc-status span').textContent=o?'Occ':'Vac'
-    updSum()
-  },150)
+function updateRoom(roomNum, occupied) {
+  if (roomStates[roomNum] === occupied) return
+  roomStates[roomNum] = occupied
+  const card = document.getElementById('room-' + roomNum)
+  if (!card) return
+  card.classList.add('flipping')
+  setTimeout(() => {
+    card.classList.remove('occupied', 'vacant')
+    card.classList.add(occupied ? 'occupied' : 'vacant')
+    card.querySelector('.room-status span').textContent = occupied ? 'Occupied' : 'Vacant'
+    card.classList.remove('flipping')
+    updateSummary()
+  }, 175)
 }
 
-function updSum(){
-  const{top,bot}=rooms(cf)
-  const all=[...top,...bot]
-  const o=all.filter(r=>rs[r]).length
-  const v=all.length-o
-  document.getElementById('sT').textContent=all.length
-  document.getElementById('sO').textContent=o
-  document.getElementById('sV').textContent=v
-  document.getElementById('sR').textContent=Math.round((o/all.length)*100)+'%'
+function updateSummary() {
+  const { top, bottom } = getRoomsForFloor(currentFloor)
+  const rooms = [...top, ...bottom]
+  const occ   = rooms.filter(r => roomStates[r]).length
+  const vac   = rooms.length - occ
+  document.getElementById('sumTotal').textContent = rooms.length
+  document.getElementById('sumOcc').textContent   = occ
+  document.getElementById('sumVac').textContent   = vac
+  document.getElementById('sumRate').textContent  = Math.round((occ/rooms.length)*100) + '%'
 }
 
-function bump(){lu=Date.now();document.getElementById('tu').textContent='Updated just now'}
-
-function startSim(){
-  sim=setInterval(()=>{
-    const all=allR()
-    const n=Math.floor(Math.random()*3)+1
-    for(let i=0;i<n;i++){
-      const r=all[Math.floor(Math.random()*all.length)]
-      if(r===LIVE_ROOM)continue
-      upd(r,!rs[r])
+// ── SIMULATION ──
+function startSimulation() {
+  simInterval = setInterval(() => {
+    const rooms = allRooms()
+    const count = Math.floor(Math.random() * 3) + 1
+    for (let i = 0; i < count; i++) {
+      const r = rooms[Math.floor(Math.random() * rooms.length)]
+      if (String(r) === String(CONFIG.live_room)) continue
+      updateRoom(r, !roomStates[r])
     }
-    bump()
-  },15000+Math.random()*10000)
+    bumpClock()
+  }, 15000 + Math.random() * 10000)
 }
 
-async function startPoll(){
-  const ngrokUrl=await loadNgrokUrl()
-  if(!ngrokUrl)return
-  poll=setInterval(async()=>{
-    try{
-      const res=await fetch(ngrokUrl+'/status',{signal:AbortSignal.timeout(3000)})
-      if(!res.ok)return
-      const d=await res.json()
-      if(d&&typeof d.occupied==='boolean'&&d.room){upd(String(d.room),d.occupied);bump()}
-    }catch{}
-  },POLL_MS)
+// ── LIVE POLLING — with ngrok-skip-browser-warning header ──
+function startLivePolling() {
+  if (!CONFIG.ngrok_url) return
+  const interval = CONFIG.poll_interval_ms || 2000
+  pollInterval = setInterval(async () => {
+    try {
+      const res = await fetch(CONFIG.ngrok_url + '/status', {
+        signal: AbortSignal.timeout(3000),
+        headers: { 'ngrok-skip-browser-warning': '1' }
+      })
+      if (!res.ok) return
+      const data = await res.json()
+      if (data && typeof data.occupied === 'boolean' && data.room) {
+        updateRoom(String(data.room), data.occupied)
+        bumpClock()
+      }
+    } catch (_) {
+      // silently fall back to demo mode
+    }
+  }, interval)
 }
 
-function startClk(){
-  clk=setInterval(()=>{
-    const s=Math.floor((Date.now()-lu)/1000)
-    const el=document.getElementById('tu')
-    if(s<10)el.textContent='Updated just now'
-    else if(s<60)el.textContent=`Updated ${s}s ago`
-    else el.textContent=`Updated ${Math.floor(s/60)}m ago`
-  },5000)
+// ── CLOCK ──
+function bumpClock() {
+  lastUpdate = Date.now()
+  document.getElementById('lastUpdated').textContent = 'Updated just now'
+}
+function startClock() {
+  clockInterval = setInterval(() => {
+    const secs = Math.floor((Date.now() - lastUpdate) / 1000)
+    const el   = document.getElementById('lastUpdated')
+    if (secs < 10)      el.textContent = 'Updated just now'
+    else if (secs < 60) el.textContent = `Updated ${secs}s ago`
+    else                el.textContent = `Updated ${Math.floor(secs/60)}m ago`
+  }, 5000)
 }
 
-function stopAll(){
-  if(sim){clearInterval(sim);sim=null}
-  if(poll){clearInterval(poll);poll=null}
-  if(clk){clearInterval(clk);clk=null}
+function stopAll() {
+  if (simInterval)   { clearInterval(simInterval);   simInterval   = null }
+  if (pollInterval)  { clearInterval(pollInterval);  pollInterval  = null }
+  if (clockInterval) { clearInterval(clockInterval); clockInterval = null }
 }
 </script>
 </body>
